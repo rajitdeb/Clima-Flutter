@@ -1,14 +1,20 @@
+import 'package:clima_app_flutter/model/location_weather.dart';
+import 'package:clima_app_flutter/model/weather.dart';
 import 'package:clima_app_flutter/util/constants.dart';
 import 'package:flutter/material.dart';
 
 class LocationScreen extends StatefulWidget {
-  const LocationScreen({super.key});
+  final LocationWeatherData data;
+
+  const LocationScreen({super.key, required this.data});
 
   @override
   State<LocationScreen> createState() => _LocationScreenState();
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  Weather weather = Weather();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,25 +49,31 @@ class _LocationScreenState extends State<LocationScreen> {
                   ),
                 ],
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 16.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0),
                 child: Row(
                   children: [
                     Text(
-                      "32°",
+                      // When we want to access the data of the actual screen
+                      // We make use of `widget` object to access that data inside
+                      // State Object
+                      /// For e.g. For `LocationScreen` class, _LocationScreenState is the state object
+                      /// So, to access the data of LocationScreen class inside the _LocationScreenState class
+                      /// We have to use the `widget` object
+                      "${widget.data.temperature.toInt()}°",
                       style: kTempTextStyle,
                     ),
                     Text(
-                      "☀️",
+                      weather.getWeatherIcon(widget.data.weatherCondition),
                       style: kConditionTextStyle,
                     ),
                   ],
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(right: 15.0),
+              Padding(
+                padding: const EdgeInsets.only(right: 15.0),
                 child: Text(
-                  "It's 🍦 time in San Francisco!",
+                  "${weather.getMessage(widget.data.temperature.toInt())} in ${widget.data.cityName}",
                   textAlign: TextAlign.right,
                   style: kMessageTextStyle,
                 ),

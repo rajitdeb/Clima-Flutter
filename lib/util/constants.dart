@@ -19,3 +19,6 @@ const kMessageTextStyle = TextStyle(
   fontFamily: 'Spartan MB',
   fontSize: 60.0,
 );
+
+const kApiBaseUrl = "https://api.openweathermap.org/data/2.5/weather";
+const kAppID = "YOUR_APP_ID";
