@@ -37,4 +37,17 @@ class NetworkHelper {
       log(response.statusCode.toString());
     }
   }
+
+  Future getAirQualityData(String cityLat, String cityLon) async {
+    Uri uri = Uri.parse(
+      "$kAirQualityApiBaseUrl?lat=$cityLat&lon=$cityLon&appid=$kAppID",
+    );
+
+    Response response = await get(uri);
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      log(response.statusCode.toString());
+    }
+  }
 }

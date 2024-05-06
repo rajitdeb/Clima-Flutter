@@ -22,6 +22,8 @@ class _LocationScreenState extends State<LocationScreen> {
   String? lat;
   String? long;
 
+  int aqi = 0;
+
   Weather weather = Weather();
 
   void updateUIForLocation(LocationWeatherData data) async {
@@ -32,6 +34,8 @@ class _LocationScreenState extends State<LocationScreen> {
 
       lat = data.lat;
       long = data.long;
+
+      aqi = data.aqi;
     });
   }
 
@@ -41,6 +45,8 @@ class _LocationScreenState extends State<LocationScreen> {
     temp = widget.data.temperature.toInt();
     weatherCondition = widget.data.weatherCondition;
     cityName = widget.data.cityName;
+
+    aqi = widget.data.aqi;
   }
 
   @override
@@ -116,6 +122,19 @@ class _LocationScreenState extends State<LocationScreen> {
                       style: kConditionTextStyle,
                     ),
                   ],
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: weather.getColorByAQI(aqi),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Text(
+                    "Air Quality: ${weather.getAirQualityInterpretation(aqi)}",
+                    style: kAQITextStyle,
+                  ),
                 ),
               ),
               Padding(

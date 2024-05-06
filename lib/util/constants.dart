@@ -15,9 +15,14 @@ const kTempTextStyle = TextStyle(
 
 const kConditionTextStyle = TextStyle(fontSize: 100.0);
 
+const kAQITextStyle = TextStyle(
+  fontFamily: 'Spartan MB',
+  fontSize: 25.0,
+);
+
 const kMessageTextStyle = TextStyle(
   fontFamily: 'Spartan MB',
-  fontSize: 60.0,
+  fontSize: 50.0,
 );
 
 const kCityInputFieldDecoration = InputDecoration(
@@ -38,4 +43,6 @@ const kCityInputFieldDecoration = InputDecoration(
 );
 
 const kApiBaseUrl = "https://api.openweathermap.org/data/2.5/weather";
+const kAirQualityApiBaseUrl =
+    "https://api.openweathermap.org/data/2.5/air_pollution";
 const kAppID = "YOUR_APP_ID";

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:clima_app_flutter/model/location_weather.dart';
+import 'package:flutter/material.dart';
 import '../model/location.dart';
 import '../model/network.dart';
 
@@ -22,9 +23,26 @@ class Weather {
       // City Name
       var cityName = weatherData["name"];
 
-      log("Temperature: $temp, Weather Condition: $weatherCondID, City Name: $cityName");
+      // Lat
+      var cityLat = weatherData["coord"]["lat"];
+      var cityLon = weatherData["coord"]["lon"];
 
-      return LocationWeatherData(temp, weatherCondID, cityName, "0.00", "0.00");
+      var airQualityData = await helper.getAirQualityData(
+        cityLat.toString(),
+        cityLon.toString(),
+      );
+      var aqi = airQualityData["list"][0]["main"]["aqi"];
+
+      log("Temperature: $temp, Weather Condition: $weatherCondID, City Name: $cityName, AQI: $aqi");
+
+      return LocationWeatherData(
+        temp,
+        weatherCondID,
+        aqi,
+        cityName,
+        cityLat.toString(),
+        cityLon.toString(),
+      );
     }
   }
 
@@ -55,11 +73,18 @@ class Weather {
     // City Name
     var cityName = weatherData["name"];
 
-    log("Temperature: $temp, Weather Condition: $weatherCondID, City Name: $cityName");
+    var airQualityData = await networkHelper.getAirQualityData(
+      location.latitude.toString(),
+      location.longitude.toString(),
+    );
+    var aqi = airQualityData["list"][0]["main"]["aqi"];
+
+    log("Temperature: $temp, Weather Condition: $weatherCondID, City Name: $cityName, AQI: $aqi");
 
     return LocationWeatherData(
       temp,
       weatherCondID,
+      aqi,
       cityName,
       location.latitude.toString(),
       location.longitude.toString(),
@@ -84,5 +109,24 @@ class Weather {
     if (temp > 20) return "Time for shorts and 👕";
     if (temp < 10) return "You'll need 🧣 and 🧤";
     return "Bring a 🧥 just in case";
+  }
+
+  // Utility function to get message based on Air Quality Index
+  String getAirQualityInterpretation(int aqi) {
+    if (aqi == 1) return "Good";
+    if (aqi == 2) return "Fair";
+    if (aqi == 3) return "Moderate";
+    if (aqi == 4) return "Poor";
+    if (aqi == 5) return "Very Poor";
+    return "Not Available";
+  }
+
+  Color getColorByAQI(int aqi) {
+    if (aqi == 1) return Colors.green;
+    if (aqi == 2) return Colors.lightGreen;
+    if (aqi == 3) return Colors.blue;
+    if (aqi == 4) return Colors.amber;
+    if (aqi == 5) return Colors.deepOrange;
+    return Colors.grey;
   }
 }
