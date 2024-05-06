@@ -1,4 +1,48 @@
+import 'dart:developer';
+
+import 'package:clima_app_flutter/model/location_weather.dart';
+import '../model/location.dart';
+import '../model/network.dart';
+
 class Weather {
+  // Get User Location
+  Future<LocationWeatherData> getWeatherDataFromLocation() async {
+    Location location = Location();
+    await location.getCurrentLocation();
+
+    // latitude = location.latitude!;
+    // longtitude = location.longitude!;
+    //
+    log("User Location: Lat: ${location.latitude}, Long: ${location.longitude}");
+
+    NetworkHelper networkHelper = NetworkHelper(
+      latitude: location.latitude!,
+      longitude: location.longitude!,
+    );
+
+    // Gets Raw JSON from API
+    var weatherData = await networkHelper.getWeatherData();
+
+    /// WE'RE USING VAR FOR INDICATING DYNAMIC DATA TYPE
+    /// BUT IN PRODUCTION, WE WOULD ALWAYS EXPLICITLY MENTION THE SPECIFIC DATA TYPE
+    // Temperature
+    var temp = weatherData["main"]["temp"];
+    // Weather Condition Number
+    var weatherCondID = weatherData["weather"][0]["id"];
+    // City Name
+    var cityName = weatherData["name"];
+
+    log("Temperature: $temp, Weather Condition: $weatherCondID, City Name: $cityName");
+
+    return LocationWeatherData(
+      temp,
+      weatherCondID,
+      cityName,
+      location.latitude.toString(),
+      location.longitude.toString(),
+    );
+  }
+
   // Utility function to get weather icon based on weather condition
   String getWeatherIcon(int condition) {
     if (condition < 300) return "🌩";

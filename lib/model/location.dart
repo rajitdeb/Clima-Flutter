@@ -41,7 +41,7 @@ class Location {
       bool isServiceEnabled = await _checkIsLocationServiceEnabled();
       if (isServiceEnabled) {
         Position pos = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.low,
+          desiredAccuracy: LocationAccuracy.best,
         );
         latitude = pos.latitude;
         longitude = pos.longitude;

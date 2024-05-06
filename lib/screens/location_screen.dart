@@ -13,7 +13,32 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  late int temp;
+  late int weatherCondition;
+  late String cityName;
+  String? lat;
+  String? long;
+
   Weather weather = Weather();
+
+  void updateUIForLocation(LocationWeatherData data) async {
+    setState(() {
+      temp = data.temperature.toInt();
+      weatherCondition = data.weatherCondition;
+      cityName = data.cityName;
+
+      lat = data.lat;
+      long = data.long;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    temp = widget.data.temperature.toInt();
+    weatherCondition = widget.data.weatherCondition;
+    cityName = widget.data.cityName;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +59,11 @@ class _LocationScreenState extends State<LocationScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      LocationWeatherData data =
+                          await weather.getWeatherDataFromLocation();
+                      updateUIForLocation(data);
+                    },
                     icon: const Icon(
                       Icons.near_me,
                       size: 36.0,
@@ -60,11 +89,11 @@ class _LocationScreenState extends State<LocationScreen> {
                       /// For e.g. For `LocationScreen` class, _LocationScreenState is the state object
                       /// So, to access the data of LocationScreen class inside the _LocationScreenState class
                       /// We have to use the `widget` object
-                      "${widget.data.temperature.toInt()}°",
+                      "$temp°",
                       style: kTempTextStyle,
                     ),
                     Text(
-                      weather.getWeatherIcon(widget.data.weatherCondition),
+                      weather.getWeatherIcon(weatherCondition),
                       style: kConditionTextStyle,
                     ),
                   ],
@@ -73,7 +102,7 @@ class _LocationScreenState extends State<LocationScreen> {
               Padding(
                 padding: const EdgeInsets.only(right: 15.0),
                 child: Text(
-                  "${weather.getMessage(widget.data.temperature.toInt())} in ${widget.data.cityName}",
+                  "${weather.getMessage(temp)} in $cityName",
                   textAlign: TextAlign.right,
                   style: kMessageTextStyle,
                 ),
