@@ -5,6 +5,29 @@ import '../model/location.dart';
 import '../model/network.dart';
 
 class Weather {
+  // Get City Weather
+  Future getWeatherByCityName(String enteredCityName) async {
+    NetworkHelper helper = NetworkHelper();
+
+    // Gets Raw JSON from API using City Name
+    var weatherData = await helper.getWeatherDataByCityName(enteredCityName);
+
+    if (weatherData != null) {
+      /// WE'RE USING VAR FOR INDICATING DYNAMIC DATA TYPE
+      /// BUT IN PRODUCTION, WE WOULD ALWAYS EXPLICITLY MENTION THE SPECIFIC DATA TYPE
+      // Temperature
+      var temp = weatherData["main"]["temp"];
+      // Weather Condition Number
+      var weatherCondID = weatherData["weather"][0]["id"];
+      // City Name
+      var cityName = weatherData["name"];
+
+      log("Temperature: $temp, Weather Condition: $weatherCondID, City Name: $cityName");
+
+      return LocationWeatherData(temp, weatherCondID, cityName, "0.00", "0.00");
+    }
+  }
+
   // Get User Location
   Future<LocationWeatherData> getWeatherDataFromLocation() async {
     Location location = Location();
