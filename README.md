@@ -4,8 +4,8 @@ A Weather forecast app based on Flutter.
 ## Objective 🎯
 The objective of this project is to learn about asynchronous programming in Dart. We'll look at how to carry out time consuming tasks such as getting device location and networking to get data from the internet.
 
-## Special Mention 🎤
-Although this is a part of course work, I went ahead with **developing an additional feature** to hit a different API and **get Air Quality data for current location and show it to user**.
+> [!IMPORTANT]
+> **Although this project is a part of course work, I went ahead with developing an additional feature to hit a different API and get Air Quality data for current location and show it to user**.
 
 ## Screenshots 📷
 | Screenshot 1 | Screenshot 2 | Screenshot 3 |
